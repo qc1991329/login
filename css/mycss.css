@@ -1,0 +1,51 @@
+.mui-loader {
+	position: absolute;
+	top: 25%;
+	width: 100%;
+	height: 60%;
+	color: #888;
+	font-size: 14px;
+	text-align: center
+}
+
+.exitbtn {
+	width: 100%;
+	display: block;
+	background: #01A1E6;
+	color: #fff;
+	border: 1px solid #01A1E6;
+	margin: 15px 0 0;
+	padding: 10px 0;
+	font-size: 19px;
+}
+
+.worktime_new,
+.worktime_new li {
+	margin: 0;
+	padding: 0;
+}
+
+.worktime_new {
+	width: 100%;
+	background: #fff;
+	border-bottom: solid 1px #ccc;
+	float: left;
+}
+
+.worktime_new li {
+	float: left;
+	list-style-type: none;
+	width: 33%;
+	margin: 10px 0 0 10px;
+}
+
+.worktime_new .width_tbdk {
+	width: 22%;
+}
+
+.worktime_new .exitbtn {
+	height: 40px;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}

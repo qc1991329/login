@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.car-location {
+				position: absolute;
+				height: 100%;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="trackmap" class="car-location"></div>
+
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/tiza.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/mapfactory.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			document.write('<script type="text/javascript" src="' + tiza.mapUrl + '"><\/script>');
+		</script>
+		<script>
+			(function() {
+				var pageVehLocation = {
+					onReady: function() {
+						var that = this;
+						mui.init();
+						mui.plusReady(function() {
+							that.bind();
+						//	that.onTap();
+						});
+					},
+					bind: function() {
+						var that = this;
+						var mapFac = new mapFactory();
+						var mapObj = mapFac.newMap("trackmap");
+						mapFac.plugin(mapObj, ["AMap.ToolBar"]);
+						var times = 0;
+						var request = tiza.getRequest();
+						plus.nativeUI.showWaiting();
+						tiza.ajax("veh/VehicleDetail", {
+							data: {
+								token: localStorage.getItem("token"),
+								userId: localStorage.getItem("userId"),
+								vehId: request.vid
+							},
+							type: "get",
+							success: function(result) {
+								if(result.state == "001") {
+								//	document.getElementById("trackinfo").innerHTML = template('tempLocation', result);
+									var lng = result.data.lng;
+									var lat = result.data.lat;
+									if(lng != "" && lat != "") {
+										mapObj.setZoom(15);//设置缩放级别，越高经度越高。
+										mapObj.setCenter(mapFac.newLngLat(lng, lat));
+										var marker = mapFac.newMarker({
+											map: mapObj,
+											content: '<img src="' + tiza.web_Domain + 'images/ProductType/40X21/' + result.data.iconUrl + '.png" />',
+											position: mapFac.newLngLat(lng, lat)
+										});
+										marker.setMap(mapObj);
+										marker.on('click', function(e) {
+											infowindow.open(mapObj, e.target.getPosition());
+										});
+										infowindow = new AMap.InfoWindow({
+											content: "<div class='info-content' id='info-content'>设备位置：</div><button class='mui-btn' onclick=\"javascript:BindVheicleAdd(" + lng + "," + lat + ")\"><span class='mui-icon mui-icon-paperplane'></span>启动导航</button>",
+											offset: new AMap.Pixel(0, -30)
+										});
+										infowindow.open(mapObj, [lng, lat]);
+
+										that.MapGeocoder(lng, lat);
+									} else {
+										mui.toast("无法获取到设备位置");
+									}
+								} else {
+									mui.toast(data.msg);
+								}
+								plus.nativeUI.closeWaiting();
+							}
+						});
+					},
+					//覆盖车辆信息窗口的显示和隐藏
+					/*onTap: function() {
+						$("#trackinfodisplay").on("tap", function() {
+							var vehinfo = $(".car-detail");
+							if(vehinfo.css("bottom") == "0px")
+								vehinfo.removeClass("toggleup").addClass("toggledown");
+							else
+								vehinfo.removeClass("toggledown").addClass("toggleup");
+						});
+						document.getElementById("trackinfodisplay").addEventListener("swipeup", function() {
+							$("#vehtrackdetail").removeClass("toggledown").addClass("toggleup");
+						});
+						document.getElementById("vehtrackdetail").addEventListener("swipedown", function() {
+							$("#vehtrackdetail").removeClass("toggleup").addClass("toggledown");
+						});
+					},*/
+					MapGeocoder: function(lng, lat) { //逆地址编码
+						var MGeocoder;
+						AMap.service(["AMap.Geocoder"], function() {
+							MGeocoder = new AMap.Geocoder({
+								city: "010",
+							});
+							if(lng) {
+								var lnglatXY = [lng, lat];
+								MGeocoder.getAddress(lnglatXY, function(status, result) {
+									if(status === 'complete' && result.info === 'OK') {
+									//	document.getElementById("myAddress").innerHTML = result.regeocode.formattedAddress;
+										document.getElementById("info-content").innerHTML = "设备位置：" + result.regeocode.formattedAddress;
+									} else {
+									//	document.getElementById("myAddress").innerHTML = "暂无位置";
+									}
+								});
+							}
+						});
+					}
+				}
+				pageVehLocation.onReady();
+				window.BindVheicleAdd = function(lng, lat) {
+					console.log("启动导航");
+					var mapProvider;
+					if(mui.os.ios) {
+						mapProvider = "system";
+					} else {
+						mapProvider = "amap";
+					}
+					if(lng == "" || lat == "") {
+						mui.toast("无法获取设备位置！");
+					}
+					plus.geolocation.getCurrentPosition(function(p) {
+						var dst = new plus.maps.Point(lng, lat); //目的地
+						var src = new plus.maps.Point(p.coords.longitude, p.coords.latitude); //起实地(手机当前位置)
+						// 调用系统地图显示
+						plus.maps.openSysMap(dst, document.getElementById("info-content").innerHTML, src);
+					}, function(e) {
+						mui.toast(e.message);
+					}, {
+						provider: mapProvider
+					});
+				}
+			}());
+		</script>
+	</body>
+
+</html>

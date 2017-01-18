@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>报表示例</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/mycss.css" />
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<ul class="worktime_new">
+				<li><input type="text" class="mui-input-clear" id="txtBegin" readonly="true" placeholder="开始时间">
+				</li>
+				<li><input type="text" class="mui-input-clear" id="txtEnd" readonly="true" placeholder="截止时间"></li>
+				<li class="width_tbdk"><button id="btnSubmit" class=" c-m1 uc-a1 exitbtn">确定</button></li>
+			</ul>
+			<div class="mui-loader" id="loader">加载中...</div>
+			<div id="main" style="height:450px; width: 115%;"></div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/echarts-all.js"></script>
+		<script src="js/tiza.js"></script>
+		<script>
+			mui.init();
+			var timeBegin = document.getElementById("txtBegin");
+			var timeEnd = document.getElementById("txtEnd");
+			mui.plusReady(function() {
+				var d = new Date();
+				timeBegin.value = addDate(d, -6);
+				timeEnd.value = addDate(d, 0);
+				bindData(timeBegin.value, timeEnd.value);
+				onTap();
+			});
+
+			function bindData(timeBegin, timeEnd) {
+				var yAxisArr = [];
+				var seriesArr = [];
+				var sendData = new Object();
+				//sendData.vehId = localStorage.getItem("vid");
+				sendData.vehId = plus.webview.currentWebview().vid;
+				sendData.timeBegin = timeBegin;
+				sendData.timeEnd = timeEnd;
+				sendData.page = 100;
+				sendData.token = localStorage.getItem("token");
+				sendData.userId = localStorage.getItem("userId");
+				plus.nativeUI.showWaiting();
+				tiza.ajax("veh/WorkTime", {
+					data: sendData,
+					type: "get",
+					success: function(result) {
+						if(result.state == "001") {
+							for(var i = 0; i < result.data.length; i++) {
+								yAxisArr.push(result.data[i].dayTime);
+								seriesArr.push(result.data[i].dayHours);
+							}
+						} else {
+							mui.toast(result.msg);
+						}
+						plus.nativeUI.closeWaiting();
+						SetCahrts(yAxisArr, seriesArr);
+					}
+				});
+			}
+
+			function SetCahrts(yAxisData, seriesData) {
+				var loader = document.getElementById("loader");
+				loader.style.display = "block";
+				var lineChart = echarts.init(document.getElementById("main"));
+				lineChart.setOption({
+					calculable: true,
+					xAxis: [{
+						type: "value",
+						boundaryGap: [0, 0.01]
+					}],
+					yAxis: [{
+						type: "category",
+						data: yAxisData
+					}],
+					series: [{
+						name: "工作时间统计",
+						type: "bar",
+						itemStyle: {
+							normal: {
+								label: {
+									show: true,
+									position: 'insideLeft',
+									formatter: '{c}小时'
+								}
+							}
+						},
+						data: seriesData
+					}]
+				});
+				loader.style.display = "none";
+			}
+
+			function onTap() {
+				mui(".mui-content").on("tap", "#txtBegin", function() {
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						timeBegin.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						mui.toast("您没有选择日期");
+					}, {
+						title: "请选择日期",
+						date: new Date(timeBegin.value)
+					});
+				}, false);
+
+				mui(".mui-content").on("tap", "#txtEnd", function() {
+					plus.nativeUI.pickDate(function(e) {
+						var d = e.date;
+						timeEnd.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+					}, function(e) {
+						mui.toast("您没有选择日期");
+					}, {
+						title: "请选择日期",
+						date: new Date(document.getElementById("txtEnd").value)
+					});
+				}, false);
+
+				mui(".mui-content").on("tap", "#btnSubmit", function() {
+					var sta_date = new Date(timeBegin.value);
+					var end_date = new Date(timeEnd.value);
+					var days = Math.floor((end_date - sta_date) / (24 * 3600 * 1000));
+
+					if(timeEnd.value != "" && timeBegin.value != "") {
+						if(days < 0) {
+							mui.toast("请选择正确的开始和结束日期");
+							return;
+						}
+						bindData(timeBegin.value, timeEnd.value);
+						document.activeElement.blur();
+					} else {
+						mui.toast("请选择开始和结束日期");
+					}
+				});
+
+			}
+
+			function addDate(date, days) {
+				var d = new Date(date);
+				d.setDate(d.getDate() + days);
+				var month = d.getMonth() + 1;
+				var day = d.getDate();
+				var val = d.getFullYear() + "-" + month + "-" + day;
+				return val;
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>VehLIst</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+	</head>
+
+	<body>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul id="mui-table-view" class="mui-table-view mui-table-view-chevron">
+					<script id="tempVehList" type="text/html">
+						<%for(var i = 0, len = data.length, j = count; i < len; i++, j++){%>
+						<li class="mui-table-view-cell" id="<%=data[i].vehId%>" vin="<%=data[i].vehCode%>">
+							<div>
+								<a class="mui-navigate-right">
+									<p style="color: #000;"><%=(j + 1) + "." + data[i].vehCode%></p>
+									<p style="color: #000;">车牌:<%if(data[i].license!=""){%>
+										<%=data[i].license%>
+										<%}else{%> 暂无
+										<%}%>&nbsp;&nbsp;位置:<%if(data[i].postion!= ""){%>
+										<%=data[i].postion%>
+										<%}else{%> 暂无
+										<%}%>
+									</p>
+								</a>
+							</div>
+						</li>
+						<%}%>
+					</script>
+
+				</ul>
+			</div>
+		</div>
+		<script src="js/template.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/tiza.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script>
+			var sendData = {
+				token: localStorage.getItem("token"),
+				userId: localStorage.getItem("userId"),
+				belong: 0,
+				isGPS: 1,
+				count: 0,
+				page: 5
+			}
+			var templateData = template('tempVehList');
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						auto: true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				var table = document.body.querySelector('.mui-table-view');
+				var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				tiza.ajax("veh/VehicleList", {
+					data: sendData,
+					type: "get",
+					success: function(result) {
+						if(result.state == "001") {
+							mui.toast("获取成功！");
+							var tableView = document.getElementById("mui-table-view");
+							var html = templateData({
+								data: result.data,
+								count: sendData.count
+							});
+							tableView.innerHTML = html + tableView.innerHTML;
+							/*for(var i = 0, len = result.data.length, j = sendData.count; i < len; i++, j++) {
+								var li = document.createElement('li');
+								li.className = 'mui-table-view-cell';
+								li.id = result.data[i].vehId;
+								li.setAttribute("vin", result.data[i].vehCode);
+								li.innerHTML = '<a class="mui-navigate-right">' + (j + 1) + '.' + result.data[i].vehCode + '</a>';
+								//下拉刷新，新纪录插到最前面；
+								table.insertBefore(li, table.firstChild);
+								//table.appendChild(li);
+							}*/
+							sendData.count = result.count;
+						} else {
+							mui.toast(result.msg);
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						//						onTap();
+					}
+				});
+			}
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				var table = document.body.querySelector('.mui-table-view');
+				var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				tiza.ajax("veh/VehicleList", {
+					data: sendData,
+					type: "get",
+					success: function(result) {
+						if(result.state == "001") {
+							mui.toast("获取成功！");
+							var tableView = document.getElementById("mui-table-view");
+							var html = templateData({
+								data: result.data,
+								count: sendData.count
+							});
+							tableView.innerHTML += html;
+							sendData.count = result.count;
+						} else {
+							mui.toast(result.msg);
+						}
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(result.data.length < sendData.page);
+						//						onTap();
+					}
+				});
+			}
+
+			mui.plusReady(function() {
+				mui('.mui-table-view').on('tap', '.mui-table-view-cell', function(e) {
+					//localStorage.setItem("vid",this.getAttribute("id"));
+					mui.openWindow({
+						"id": 'main',
+						"url": 'main.html?vin=' + this.getAttribute("vin") + '&vid=' + this.getAttribute("id")
+							//						extras:{
+							//							vin: this.getAttribute("vin")
+							//						}
+					});
+				});
+			});
+
+			function onTap() {
+				$('.mui-table-view-cell').on("tap", function() {
+					//localStorage.setItem("vid",this.getAttribute("id"));
+					mui.openWindow({
+						"id": 'main',
+						"url": 'main.html?vin=' + this.getAttribute("vin") + '&vid=' + this.getAttribute("id")
+					});
+				});
+			}
+		</script>
+	</body>
+
+</html>
