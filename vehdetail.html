@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link href="css/base.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/vehCenter.css" />
+		<title>设备详情</title>
+		<style type="text/css">
+			.gauge div {
+				height: 170px;
+				width: 50%;
+				float: left;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<table class="mui-table-view productlist_new tablenewh_new2" id="mui-table-view" style="margin: 0; border: none; width: 100%;">
+				<script id="tempVehDetail" type="text/html">
+					<tr>
+						<td class="lefttd">当前转速：</td>
+						<td id="curwork0">
+							暂无
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">当前水温：</td>
+						<td id="curwork1">
+							暂无
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">机油压力：</td>
+						<td id="curwork2">
+							暂无
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">力矩百分：</td>
+						<td id="curwork3">
+							暂无
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">编号：</td>
+						<td>
+							<%=data.vehNo%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">类型：</td>
+						<td>
+							<%=data.producName%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">型号：</td>
+						<td>
+							<%=data.productModel%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">定位时间：</td>
+						<td>
+							<%=data.gpsTime%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">位置：</td>
+						<td id="myAddress">
+							<%=data.postion%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">速度：</td>
+						<td>
+							<%=data.speed%>km/h</td>
+					</tr>
+					<tr>
+						<td class="lefttd">工时：</td>
+						<td>
+							<%if(data.accHours==""){%> 暂无
+							<%}else{%>
+							<%=data.accHours%>小时
+							<%}%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">车牌：</td>
+						<td>
+							<%if(data.license==""){%> 暂无
+							<%}else{%>
+							<%=data.license%>
+							<%}%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">司机：</td>
+						<td>
+							<%if(data.driverName==""){%> 暂无
+							<%}else{%>
+							<%=data.driverName%>
+							<%}%>
+						</td>
+					</tr>
+					<tr>
+						<td class="lefttd">电话：</td>
+						<td>
+							<%if(data.driverTel==""){%> 暂无
+							<%}else{%>
+							<%=data.driverTel%>
+							<%}%>
+						</td>
+					</tr>
+				</script>
+			</table>
+		</div>
+		<script src="js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/tiza.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/template.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			document.write('<script type="text/javascript" src="' + tiza.mapUrl + '"><\/script>');
+		</script>
+		<script src="js/mapfactory.js" type="text/javascript"></script>
+		<script>
+			var pageVehDetail = {
+				onReady: function() {
+					var that = this;
+					mui.init();
+					mui.plusReady(function() {
+						that.bind();
+					//	that.bindGauge();
+					//	that.onTap();
+					});
+				},
+				bind: function() {
+					var request = tiza.getRequest();
+					plus.nativeUI.showWaiting();
+					tiza.ajax("veh/VehicleDetail", {
+						data: {
+							token: localStorage.getItem("token"),
+							userId: localStorage.getItem("userId"),
+							vehId: request.vid
+						},
+						type: "get",
+						success: function(result) {
+							if(result.state == "001") {
+								document.getElementById("mui-table-view").innerHTML = template('tempVehDetail', result);
+								setTimeout(function() {
+									var mapFac = new mapFactory();
+									mapFac.Geocoder(result.data.lng, result.data.lat, function(address) {
+										document.getElementById("myAddress").innerHTML = address;
+									});
+								}, 200);
+								pageVehDetail.bindGauge();
+							} else {
+								mui.toast(data.msg);
+							}
+							plus.nativeUI.closeWaiting();
+						}
+					});
+				},
+				bindGauge: function() {
+					var that = this;
+					var request = tiza.getRequest();
+				//	var yAxisArr = [];
+				//	var seriesArr = [];
+					tiza.ajax("veh/CurWork", {
+						data: {
+							token: localStorage.getItem("token"),
+							userId: localStorage.getItem("userId"),
+							vehId: request.vid,
+							type: 1
+						},
+						type: "get",
+						success: function(result) {
+							if(result.state == "001") {
+								if(result.data.length > 0) {
+									for(var i = 0; i < result.data.length; i++) {
+										document.getElementById("curwork"+i).innerHTML = result.data[i].value+result.data[i].unit;
+									//	var gauge = JSON.parse(result.data[i].gauge);
+									//	that.showChart(result.data[i], gauge, i);
+									}
+								}
+							} else {
+								plus.nativeUI.closeWaiting();
+								//mui.toast(result.msg);
+							}
+						}
+					});
+				},
+				showChart: function(result, gauge, i) {
+					var option = {
+						tooltip: {
+							formatter: "{a} <br/>{b} : {c}" + result.unit
+						},
+						series: [{
+							name: result.name,
+							max: gauge.max,
+							min: gauge.min,
+							splitNumber: gauge.splitNumber,
+							type: 'gauge',
+							detail: {
+								formatter: '{value}'
+							},
+							data: [{
+								value: result.value,
+								name: result.name
+							}],
+							axisLine: {
+								lineStyle: {
+									color: gauge.color,
+									width: 10
+								}
+							},
+							splitLine: {
+								show: true,
+								length: 10
+							},
+							pointer: {
+								length: "90%",
+								width: 5
+							},
+							detail: {
+								formatter: "{value}" + result.unit,
+								textStyle: {
+									fontSize: 20
+								},
+								height: 70
+							}
+						}]
+					};
+					var mydiv = document.createElement('div');
+					mydiv.setAttribute("id", "myChart" + i);
+					//mydiv.style.width = "50%";
+					//mydiv.style.height = "250px";
+					document.getElementById("myChart").appendChild(mydiv);
+					var myChart = echarts.init(mydiv);
+					myChart.setOption(option);
+				},
+				onTap: function() {
+					var that = this;
+					$("#btnSave").live("tap", function() {
+						var objSet = new Object();
+						var request = tiza.getRequest();
+						objSet.vehId = request.vehId;
+						objSet.license = $("#license").val();
+						objSet.driverName = $("#driverName").val();
+						objSet.driverTel = $("#driverTel").val();
+						tiza.ajax("Veh/DriverSet", {
+							data: objSet,
+							type: "post",
+							success: function(result) {
+								plus.nativeUI.closeWaiting();
+								if(result.state == "001") {
+									mui.toast("信息更新成功！");
+								}
+								mui.toast(result.msg);
+							}
+						});
+					});
+				}
+			}
+			pageVehDetail.onReady();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,80 @@
+/*body{ background: #eee;}*/
+/*顶部加载条*/
+.div_process {
+	width: 100%;
+	background: transparent;
+	height: 320px;
+	min-height: 320px;
+	position: fixed;
+	top: 0;
+	z-index: 9998
+}
+.loading-process-total {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 3px;
+	background: #a0a9ae;
+	z-index: 9999
+}
+.loading-process {
+	position: fixed;
+	background: #415462;
+	height: 3px;
+	top: 0;
+	z-index: 9999;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out
+}
+.dthoastdi {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: 99999;
+	text-align: center;
+	top: 0;
+	background: transparent;
+	left: 0
+}
+.dthoastimg {
+	width: 100%;
+	position: fixed;
+	top: 38%;
+	text-align: center;
+	z-index: 9999
+}
+.dthoastimg .dthoastdiv {
+	margin: auto;
+	background: transparent
+}
+.dthoastimg .dthoastdiv img {
+	width: 50px
+}
+.dthoastimg .dthoasttishi {
+	font-size: 14px
+}
+
+/*公共部分样式*/
+.mui-bar-nav{ height: 45px; background: #01A2EA; padding:2px 0 0; margin: 0; color: #fff;}
+.mui-title{color: #fff;}
+.mui-title img{ margin: 5px 0 0;}
+.mui-title span{ margin: -5px 0 0; display: block;}
+.lg-header{ height: 45px; background: #01A2EA url(../img/logotitle.svg) no-repeat center center; padding:2px 0 0; margin: 0; color: #fff;}
+/*.mui-icon-home:before{content: "\e504";}*/
+
+.mui-icon-back:before, .mui-icon-left-nav:before{ color: #fff;}
+.mui-bar-nav {
+    box-shadow:none;
+}
+.mui-icon-bars:before {color: #fff;}
+.mui-btn-blue, .mui-btn-primary, input[type="submit"] {
+    background-color: #01A1E6;
+    border: 1px solid #01A1E6;
+    color: #FFFFFF;
+}
+
+.fontbody_new{ font-size:25px; color: #fff; font-weight: 700; right: 10px;}
+
+.line_new{ position: absolute; bottom:29px; left: 0; width: 100%; height: 22px; border-top: solid 1px #ddd; z-index: 999;}
+.posi_new{position: relative;}
