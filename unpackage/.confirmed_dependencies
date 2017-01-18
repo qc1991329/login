@@ -7,7 +7,8 @@
 			"pullrefresh_main.html",
 			"workingtimechart.html",
 			"mileagechart.html",
-			"location.html"
+			"location.html",
+			"vehdetail.html"
 		],
 		"resources": [
 			"datachart.html",
@@ -123,6 +124,18 @@
 			"js/mapfactory.js",
 			"js/mui.min.js",
 			"js/zepto.min.js",
+			"js/tiza.js"
+		]
+	},
+	"vehdetail.html": {
+		"resources": [
+			"css/base.css",
+			"css/vehCenter.css",
+			"js/mapfactory.js",
+			"js/zepto.min.js",
+			"js/template.js",
+			"js/mui.min.js",
+			"css/mui.min.css",
 			"js/tiza.js"
 		]
 	}

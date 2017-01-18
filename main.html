@@ -36,13 +36,17 @@
 				<span class="mui-icon mui-icon-map"><!--<span class="mui-badge">9</span>--></span>
 				<span class="mui-tab-label">位置导航</span>
 			</a>
+			<a class="mui-tab-item" id="serviceCenter" href="vehdetail.html">
+				<span class="mui-icon mui-icon-compose"><!--<span class="mui-badge">9</span>--></span>
+				<span class="mui-tab-label">设备详情</span>
+			</a>
 			<script src="js/mui.min.js"></script>
 			<script src="js/app.js"></script>
 			<script src="js/tiza.js"></script>
 			<script>
 				(function($, doc) {
 					$.init();
-					var subpages = ['workingtimechart.html', 'mileagechart.html','location.html'];
+					var subpages = ['workingtimechart.html', 'mileagechart.html','location.html','vehdetail.html'];
 					var activeTab = subpages[0];
 					var subpage_style = {
 						top: '45px',
