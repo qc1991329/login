@@ -1,142 +1,142 @@
 {
-	"main.html": {
-		"refer": [
-			"setting.html",
-			"datachart.html",
-			"datalist.html",
-			"pullrefresh_main.html",
-			"workingtimechart.html",
-			"mileagechart.html",
-			"location.html",
-			"vehdetail.html"
-		],
-		"resources": [
-			"datachart.html",
-			"js/app.js",
-			"js/mui.min.js",
-			"fonts/mui.ttf",
-			"css/mui.min.css",
-			"workingtimechart.html",
-			"js/tiza.js"
-		]
-	},
-	"login.html": {
-		"resources": [
-			"js/app.js",
-			"js/mui.min.js",
-			"images/sinaweibo.png",
-			"css/mui.min.css",
-			"css/style.css",
-			"images/weixin.png",
-			"images/qq.png",
-			"js/mui.enterfocus.js",
-			"fonts/mui.ttf",
-			"js/tiza.js",
-			"js/zepto.min.js",
-			"css/login.css"
-		],
-		"refer": [
-			"main.html",
-			"vehlist_main.html"
-		]
-	},
-	"setting.html": {
-		"resources": [
-			"libs/easymob-webim-sdk/easemob.im-1.0.5.js",
-			"fonts/mui.ttf",
-			"libs/easymob-webim-sdk/json2.js",
-			"libs/easymob-webim-sdk/jquery-1.11.1.js",
-			"js/mui.locker.js",
-			"js/feedback.js",
-			"css/feedback-page.css",
-			"js/feedback-page.js",
-			"libs/easymob-webim-sdk/strophe-custom-2.0.0.js",
-			"js/mui.view.js"
-		]
-	},
-	"datachart.html": {
-		"resources": [
-			"js/echarts.min.js",
-			"css/app.css",
-			"css/mycss.css",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"js/tiza.js",
-			"js/echarts-all.js"
-		]
-	},
-	"pullrefresh_main.html": {
-		"resources": [
-			"pullrefresh_sub.html",
-			"js/mui.min.js",
-			"css/mui.min.css"
-		],
-		"refer": [
-			"pullrefresh_sub.html"
-		]
-	},
-	"vehlist_main.html": {
-		"resources": [
-			"vehlist_sub.html",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"js/tiza.js"
-		],
-		"refer": [
-			"vehlist_sub.html"
-		]
-	},
-	"vehlist_sub.html": {
-		"resources": [
-			"fonts/mui.ttf",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"js/tiza.js",
-			"js/zepto.min.js",
-			"js/template.js"
-		],
-		"refer": [
-			"main.html"
-		]
-	},
-	"workingtimechart.html": {
-		"resources": [
-			"css/mycss.css",
-			"js/echarts-all.js",
-			"css/app.css",
-			"js/tiza.js",
-			"js/mui.min.js",
-			"css/mui.min.css"
-		]
-	},
-	"mileagechart.html": {
-		"resources": [
-			"css/mycss.css",
-			"js/echarts-all.js",
-			"js/mui.min.js",
-			"css/app.css",
-			"css/mui.min.css",
-			"js/tiza.js"
-		]
-	},
-	"location.html": {
-		"resources": [
-			"js/mapfactory.js",
-			"js/mui.min.js",
-			"js/zepto.min.js",
-			"js/tiza.js"
-		]
-	},
-	"vehdetail.html": {
-		"resources": [
-			"css/base.css",
-			"css/vehCenter.css",
-			"js/mapfactory.js",
-			"js/zepto.min.js",
-			"js/template.js",
-			"js/mui.min.js",
-			"css/mui.min.css",
-			"js/tiza.js"
-		]
-	}
+  "main.html": {
+    "refer": [
+      "setting.html",
+      "datachart.html",
+      "datalist.html",
+      "pullrefresh_main.html",
+      "workingtimechart.html",
+      "mileagechart.html",
+      "location.html",
+      "vehdetail.html"
+    ],
+    "resources": [
+      "datachart.html",
+      "js/app.js",
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css",
+      "workingtimechart.html",
+      "js/tiza.js"
+    ]
+  },
+  "login.html": {
+    "resources": [
+      "js/app.js",
+      "js/mui.min.js",
+      "images/sinaweibo.png",
+      "css/mui.min.css",
+      "css/style.css",
+      "images/weixin.png",
+      "images/qq.png",
+      "js/mui.enterfocus.js",
+      "fonts/mui.ttf",
+      "js/tiza.js",
+      "js/zepto.min.js",
+      "css/login.css"
+    ],
+    "refer": [
+      "main.html",
+      "vehlist_main.html"
+    ]
+  },
+  "setting.html": {
+    "resources": [
+      "libs/easymob-webim-sdk/easemob.im-1.0.5.js",
+      "fonts/mui.ttf",
+      "libs/easymob-webim-sdk/json2.js",
+      "libs/easymob-webim-sdk/jquery-1.11.1.js",
+      "js/mui.locker.js",
+      "js/feedback.js",
+      "css/feedback-page.css",
+      "js/feedback-page.js",
+      "libs/easymob-webim-sdk/strophe-custom-2.0.0.js",
+      "js/mui.view.js"
+    ]
+  },
+  "datachart.html": {
+    "resources": [
+      "js/echarts.min.js",
+      "css/app.css",
+      "css/mycss.css",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/tiza.js",
+      "js/echarts-all.js"
+    ]
+  },
+  "pullrefresh_main.html": {
+    "resources": [
+      "pullrefresh_sub.html",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ],
+    "refer": [
+      "pullrefresh_sub.html"
+    ]
+  },
+  "vehlist_main.html": {
+    "resources": [
+      "vehlist_sub.html",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/tiza.js"
+    ],
+    "refer": [
+      "vehlist_sub.html"
+    ]
+  },
+  "vehlist_sub.html": {
+    "resources": [
+      "fonts/mui.ttf",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/tiza.js",
+      "js/zepto.min.js",
+      "js/template.js"
+    ],
+    "refer": [
+      "main.html"
+    ]
+  },
+  "workingtimechart.html": {
+    "resources": [
+      "css/mycss.css",
+      "js/echarts-all.js",
+      "css/app.css",
+      "js/tiza.js",
+      "js/mui.min.js",
+      "css/mui.min.css"
+    ]
+  },
+  "mileagechart.html": {
+    "resources": [
+      "css/mycss.css",
+      "js/echarts-all.js",
+      "js/mui.min.js",
+      "css/app.css",
+      "css/mui.min.css",
+      "js/tiza.js"
+    ]
+  },
+  "location.html": {
+    "resources": [
+      "js/mapfactory.js",
+      "js/mui.min.js",
+      "js/zepto.min.js",
+      "js/tiza.js"
+    ]
+  },
+  "vehdetail.html": {
+    "resources": [
+      "css/base.css",
+      "css/vehCenter.css",
+      "js/mapfactory.js",
+      "js/zepto.min.js",
+      "js/template.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "js/tiza.js"
+    ]
+  }
 }

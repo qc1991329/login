@@ -145,8 +145,8 @@
 					plus.nativeUI.showWaiting();
 					tiza.ajax("veh/VehicleDetail", {
 						data: {
-							token: localStorage.getItem("token"),
-							userId: localStorage.getItem("userId"),
+						//	token: localStorage.getItem("token"),
+						//	userId: localStorage.getItem("userId"),
 							vehId: request.vid
 						},
 						type: "get",
@@ -174,8 +174,8 @@
 				//	var seriesArr = [];
 					tiza.ajax("veh/CurWork", {
 						data: {
-							token: localStorage.getItem("token"),
-							userId: localStorage.getItem("userId"),
+						//	token: localStorage.getItem("token"),
+						//	userId: localStorage.getItem("userId"),
 							vehId: request.vid,
 							type: 1
 						},

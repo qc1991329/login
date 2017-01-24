@@ -47,14 +47,14 @@
 				var xAxisData = [];
 				var seriesArr = [];
 				var sendData = new Object();
-				//sendData.vehId = localStorage.getItem("vid");
+			//	sendData.vehId = localStorage.getItem("vid");
 				var request = tiza.getRequest();
 				sendData.vehId = request.vid;
 				sendData.timeBegin = timeBegin;
 				sendData.timeEnd = timeEnd;
 				sendData.page = 100;
-				sendData.token = localStorage.getItem("token");
-				sendData.userId = localStorage.getItem("userId");
+			//	sendData.token = localStorage.getItem("token");
+			//	sendData.userId = localStorage.getItem("userId");
 				plus.nativeUI.showWaiting();
 				tiza.ajax("veh/Mileage", {
 					data: sendData,

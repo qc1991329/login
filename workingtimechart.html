@@ -52,8 +52,8 @@
 				sendData.timeBegin = timeBegin;
 				sendData.timeEnd = timeEnd;
 				sendData.page = 100;
-				sendData.token = localStorage.getItem("token");
-				sendData.userId = localStorage.getItem("userId");
+			//	sendData.token = localStorage.getItem("token");
+			//	sendData.userId = localStorage.getItem("userId");
 				plus.nativeUI.showWaiting();
 				tiza.ajax("veh/WorkTime", {
 					data: sendData,

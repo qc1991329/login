@@ -60,13 +60,13 @@
 				};
 				url = url.indexOf("http") >= 0 ? url : (tiza.server_Domain + url);
 				//如果参数中存在user:false，则不需要做登录验证，默认需要做登录验证
-/*				if (settings.user != false) {
+				if (settings.user != false) {
 					if (this.isLogin()) {
 						url += "?userId=" + localStorage.getItem("userId") + "&token=" + localStorage.getItem("token");
 					} else {
 						this.responseValidate();
 					}
-				}*/
+				}
 				mui.ajax(url, ajaxSettings);
 			} else {
 				mui.toast("网络连接不可用！");
